@@ -23,7 +23,10 @@ public class Main {
 
     //This function should return a new model
     private static String newModel() {
-        return null;
+        GameModel model = new GameModel();
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(model));
+        return gson.toJson(model);
     }
 
     //This function should accept an HTTP request and deseralize it into an actual Java object.
@@ -45,7 +48,14 @@ public class Main {
 
     //Similar to placeShip, but with firing.
     private static String fireAt(Request req) {
-        return null;
+        Gson gson = new Gson();
+        GameModel model = gson.fromJson(req.body(),GameModel.class);
+        Coordinate fire = new Coordinate(Integer.parseInt(req.params(":row")), Integer.parseInt(req.params(":col")));
+
+        System.out.print(fire.Across);
+        System.out.print(fire.Down);
+
+        return gson.toJson(model);
     }
 
 }
