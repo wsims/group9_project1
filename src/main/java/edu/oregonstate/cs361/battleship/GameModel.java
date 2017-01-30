@@ -1,4 +1,5 @@
 package edu.oregonstate.cs361.battleship;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +49,13 @@ public class GameModel {
                 new Coordinate(0,0), new Coordinate(0,0));
         computer_submarine       = new BattleshipModel("Computer_Submarine", 2,
                 new Coordinate(0,0), new Coordinate(0,0));
+
+        playerHits      = new ArrayList<Coordinate>();
+        playerMisses    = new ArrayList<Coordinate>();
+        computerHits    = new ArrayList<Coordinate>();
+        computerMisses  = new ArrayList<Coordinate>();
     }
+
 
 
 }
