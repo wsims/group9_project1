@@ -25,7 +25,7 @@ public class BattleshipModel {
 
         name = n;
         length = l;
-        start = new Coordinate(s.Across,s.Down);
-        end = new Coordinate(e.Across,e.Down);
+        start = s;
+        end = e;
     }
 }

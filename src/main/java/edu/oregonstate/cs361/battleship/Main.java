@@ -1,4 +1,5 @@
 package edu.oregonstate.cs361.battleship;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,8 +24,10 @@ public class Main {
 
     //This function should return a new model
     private static String newModel() {
+
         GameModel model = new GameModel();
         Gson gson = new Gson();
+
         System.out.println(gson.toJson(model));
         return gson.toJson(model);
     }
@@ -32,9 +35,7 @@ public class Main {
     //This function should accept an HTTP request and deseralize it into an actual Java object.
     private static BattleshipModel getModelFromReq(Request req){
 
-        //Create the GSON object
-        GsonBuilder gBuilder = new GsonBuilder();
-        Gson gson = gBuilder.create();
+        Gson gson = new Gson();
 
         //Populate a  BattleshipModel object using JSON data
         return gson.fromJson(req.body(),BattleshipModel.class);
