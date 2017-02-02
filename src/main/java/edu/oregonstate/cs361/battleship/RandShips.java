@@ -6,7 +6,7 @@ import java.util.Random;
  * Created by fbolanos on 2/1/2017.
  */
  
- public class Rand {
+ public class RandShips{
 
     int[][] board = new int[10][10];
 
@@ -23,7 +23,7 @@ import java.util.Random;
     int[] SubmarineCordsEnd=new int[2];
 
   
-    public Rand() {
+    public RandShips() {
         int lengths[] = {2, 2, 3, 5, 6};
 
         for (int k = 0; k < 5; k++) {
