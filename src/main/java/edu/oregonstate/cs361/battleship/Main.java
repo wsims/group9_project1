@@ -1,8 +1,10 @@
 package edu.oregonstate.cs361.battleship;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import spark.Request;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -50,83 +52,66 @@ public class Main {
     //Similar to placeShip, but with firing.
     private static String fireAt(Request req) {
         Gson gson = new Gson();
+        Random rand = new Random(1);
         GameModel model = gson.fromJson(req.body(),GameModel.class);
         Coordinate fire = new Coordinate(Integer.parseInt(req.params(":col")), Integer.parseInt(req.params(":row")));
-        int temp = fire.Across;
 
-        if (! checkRepeatFire(fire, model)) {
-            if (checkCollision(fire, model) == true) {
+        if (! checkRepeatFire(fire, model.playerHits, model.playerMisses)) {
+            if (checkCollision(fire, model.computer_aircraftCarrier, model.computer_battleship, model.computer_cruiser, model.computer_destroyer, model.computer_submarine)) {
                 model.playerHits.add(fire);
             } else {
                 model.playerMisses.add(fire);
             }
         }
-        
-        System.out.print(fire.Across);
-        System.out.print(fire.Down);
+
+        Coordinate fireAI = new Coordinate(rand.nextInt(10) + 1, rand.nextInt(10) + 1);
+        //Check for location that isn't already on board.
+        while (checkRepeatFire(fireAI, model.computerHits, model.computerMisses)) {
+            fireAI.Across = rand.nextInt(10) + 1;
+            fireAI.Down = rand.nextInt(10) + 1;
+        }
+        //Check if AI hit the players ships
+        if (checkCollision(fireAI, model.aircraftCarrier, model.battleship, model.cruiser, model.destroyer, model.submarine)) {
+            model.computerHits.add(fireAI);
+        } else {
+            model.computerMisses.add(fireAI);
+        }
+
         System.out.println(gson.toJson(model));
 
         return gson.toJson(model);
     }
 
-    private static Boolean checkCollision(Coordinate cord, GameModel model) {
+    private static Boolean checkCollision(Coordinate cord, BattleshipModel ac, BattleshipModel bs, BattleshipModel c, BattleshipModel d, BattleshipModel s) {
         //Across = col, Down = row
         //Check if horizontal or vertical
-
-        //computer_aircraftCarrier
-        if (model.computer_aircraftCarrier.start.Across == model.computer_aircraftCarrier.end.Across && cord.Across == model.computer_aircraftCarrier.start.Across) {
-            if (cord.Down >= model.computer_aircraftCarrier.start.Down && cord.Down <= model.computer_aircraftCarrier.end.Down)
-                return true;
-        } else if (model.computer_aircraftCarrier.start.Down == cord.Down){ //Horizontal
-            if (cord.Across >= model.computer_aircraftCarrier.start.Across && cord.Across <= model.computer_aircraftCarrier.end.Across)
-                return true;
-        }
-
-        //computer_battleship
-        if (model.computer_battleship.start.Across == model.computer_battleship.end.Across && cord.Across == model.computer_battleship.start.Across) {
-            if (cord.Down >= model.computer_battleship.start.Down && cord.Down <= model.computer_battleship.end.Down)
-                return true;
-        } else if (model.computer_battleship.start.Down == cord.Down){ //Horizontal
-            if (cord.Across >= model.computer_battleship.start.Across && cord.Across <= model.computer_battleship.end.Across)
-                return true;
-        }
-
-        //computer_cruiser
-        if (model.computer_cruiser.start.Across == model.computer_cruiser.end.Across && cord.Across == model.computer_cruiser.start.Across) {
-            if (cord.Down >= model.computer_cruiser.start.Down && cord.Down <= model.computer_cruiser.end.Down)
-                return true;
-        } else if (model.computer_cruiser.start.Down == cord.Down){ //Horizontal
-            if (cord.Across >= model.computer_cruiser.start.Across && cord.Across <= model.computer_cruiser.end.Across)
-                return true;
-        }
-
-        //computer_destroyer
-        if (model.computer_destroyer.start.Across == model.computer_destroyer.end.Across && cord.Across == model.computer_destroyer.start.Across) {
-            if (cord.Down >= model.computer_destroyer.start.Down && cord.Down <= model.computer_destroyer.end.Down)
-                return true;
-        } else if (model.computer_destroyer.start.Down == cord.Down){ //Horizontal
-            if (cord.Across >= model.computer_destroyer.start.Across && cord.Across <= model.computer_destroyer.end.Across)
-                return true;
-        }
-
-        //computer_submarine
-        if (model.computer_submarine.start.Across == model.computer_submarine.end.Across && cord.Across == model.computer_submarine.start.Across) {
-            if (cord.Down >= model.computer_submarine.start.Down && cord.Down <= model.computer_submarine.end.Down)
-                return true;
-        } else if (model.computer_submarine.start.Down == cord.Down){ //Horizontal
-            if (cord.Across >= model.computer_submarine.start.Across && cord.Across <= model.computer_submarine.end.Across)
-                return true;
+        List<BattleshipModel> shipList;
+        shipList = new ArrayList<>();
+        shipList.add(ac);
+        shipList.add(bs);
+        shipList.add(c);
+        shipList.add(d);
+        shipList.add(s);
+        for (int i = 0; i<5; i++) {
+            BattleshipModel temp = shipList.get(i);
+            if (temp.start.Across == temp.end.Across && cord.Across == temp.start.Across) {
+                if (cord.Down >= temp.start.Down && cord.Down <= temp.end.Down)
+                    return true;
+            } else if (temp.start.Down == cord.Down) { //Horizontal
+                if (cord.Across >= temp.start.Across && cord.Across <= temp.end.Across)
+                    return true;
+            }
         }
         return false;
     }
 
-    private static boolean checkRepeatFire(Coordinate cord, GameModel model) {
-        for (int i = 0; i < model.playerHits.size(); i++) {
-            if (cord.Across == model.playerHits.get(i).Across && cord.Down == model.playerHits.get(i).Down)
+    private static boolean checkRepeatFire(Coordinate cord, List<Coordinate> hit, List<Coordinate> miss) {
+        for (Coordinate aHit : hit) {
+            if (cord.Across == aHit.Across && cord.Down == aHit.Down)
                 return true;
         }
-        for (int i = 0; i < model.playerMisses.size(); i++) {
-            if (cord.Across == model.playerMisses.get(i).Across && cord.Down == model.playerMisses.get(i).Down)
+        for (Coordinate aMiss : miss) {
+            if (cord.Across == aMiss.Across && cord.Down == aMiss.Down)
                 return true;
         }
         return false;
