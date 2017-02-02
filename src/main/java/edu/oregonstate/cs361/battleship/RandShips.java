@@ -22,6 +22,7 @@ import java.util.Random;
     int[] DestroyerCordsEnd=new int[2];
     int[] SubmarineCordsEnd=new int[2];
 
+  
     public Rand() {
         int lengths[] = {2, 2, 3, 5, 6};
 
@@ -61,7 +62,7 @@ import java.util.Random;
                         sameloc = false;
                 }
 
-                //horizontal right
+                //horizontal right orientation check
                 if (orientation % 4 == 1) {
                     if ((ycord + size) <= 9) {
                         for (int i = ycord; i <= (ycord + size); i++) {
@@ -80,7 +81,7 @@ import java.util.Random;
                     }
                 }
 
-                //horizontal left
+                //horizontal left orientation chek
                 if (orientation % 4 == 2) {
                     if ((ycord - size) >= 0) {
                         for (int i = ycord - size; i <= ycord; i++) {
@@ -99,7 +100,7 @@ import java.util.Random;
                     }
                 }
 
-                //vertical down
+                //vertical down orientation check
                 if (orientation % 4 == 3) {
                     if ((xcord + size) <= 9) {
                         for (int i = xcord; i <= (xcord + size); i++) {
@@ -118,7 +119,7 @@ import java.util.Random;
                     }
                 }
 
-                // vertical up
+                // vertical up oreintation check
                 if (orientation % 4 == 0) {
                     if ((xcord - size) >= 0) {
                         for (int i = xcord - size; i <= xcord; i++) {
@@ -141,6 +142,7 @@ import java.util.Random;
                 StartCord[1]=ycord;
             }
 
+            //records the starting and ending corddinates for each ship
             if(k==0){
                 SubmarineCordsStart=StartCord.clone();
                 SubmarineCordsEnd=EndCord.clone();
@@ -164,6 +166,7 @@ import java.util.Random;
         }
     }
 
+    //optional function that displays the table of game with ships. 0's are unocupied spaces and 1's are occupied spaces.
     public void print() {
         for (int x = 0; x < 10; x++) {
             for (int y = 0; y < 10; y++) {
