@@ -77,15 +77,6 @@ public class Main {
             model.computerMisses.add(fireAI);
         }
 
-        //checks if any of the two players has won and if so it resets the game
-        if(checkWin(model.playerHits) || (checkWin(model.playerHits) && checkWin(model.computerHits))) {
-            System.out.println("game won by player");
-            model.ResetGame();
-        }
-        else if(checkWin(model.computerHits) && (!checkWin(model.playerHits))){
-            System.out.println("game won by computer");
-            model.ResetGame();
-        }
         
         System.out.println(gson.toJson(model));
 
@@ -127,12 +118,35 @@ public class Main {
         return false;
     }
     
+     //resets model
+    private static void resetgame(GameModel model){
+        model.ResetGame();
+    }
+
+    
     //function that checks if won
-    private static boolean checkWin(List<Coordinate> hits){
-        if(hits.size()==16){
+    private static boolean checkWin(List<Coordinate> phits, List<Coordinate> chits){
+        boolean playerWin=false;
+        boolean computerWin=false;
+
+        if(phits.size()==2)
+            playerWin=true;
+
+        if(chits.size()==2)
+            computerWin=true;
+
+
+        //checks if any of the two players has won and if so it resets the game
+        if(playerWin || (playerWin && computerWin)) {
+            System.out.println("game won by player");
             return true;
         }
-        return false;
+        else if(computerWin && (!playerWin)){
+            System.out.println("game won by computer");
+            return true;
+        }
+        else
+            return false;
     }
     
 
