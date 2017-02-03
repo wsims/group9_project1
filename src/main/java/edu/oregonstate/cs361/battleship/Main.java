@@ -129,10 +129,10 @@ public class Main {
         boolean playerWin=false;
         boolean computerWin=false;
 
-        if(phits.size()==2)
+        if(phits.size()==16)
             playerWin=true;
 
-        if(chits.size()==2)
+        if(chits.size()==16)
             computerWin=true;
 
 
