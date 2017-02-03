@@ -27,7 +27,7 @@ public class RandShipsTest {
         // coordinates if they are unequal. however since the random numbers are
         //restrained to a specific range eventually this assert will fail when
         //both generate the same random numbers.
-        assertNotEquals(randy.AircraftCordsStart,randy2.AircraftCordsStart)
+        assertNotEquals(randy.AircraftCordsStart,randy2.AircraftCordsStart);
 
     }
 
