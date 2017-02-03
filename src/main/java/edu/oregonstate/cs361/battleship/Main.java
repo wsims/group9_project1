@@ -77,6 +77,7 @@ public class Main {
             model.computerMisses.add(fireAI);
         }
 
+        
         System.out.println(gson.toJson(model));
 
         return gson.toJson(model);
@@ -116,5 +117,37 @@ public class Main {
         }
         return false;
     }
+    
+     //resets model
+    private static void resetgame(GameModel model){
+        model.ResetGame();
+    }
+
+    
+    //function that checks if won
+    private static boolean checkWin(List<Coordinate> phits, List<Coordinate> chits){
+        boolean playerWin=false;
+        boolean computerWin=false;
+
+        if(phits.size()==16)
+            playerWin=true;
+
+        if(chits.size()==16)
+            computerWin=true;
+
+
+        //checks if any of the two players has won and if so it resets the game
+        if(playerWin || (playerWin && computerWin)) {
+            System.out.println("game won by player");
+            return true;
+        }
+        else if(computerWin && (!playerWin)){
+            System.out.println("game won by computer");
+            return true;
+        }
+        else
+            return false;
+    }
+    
 
 }
