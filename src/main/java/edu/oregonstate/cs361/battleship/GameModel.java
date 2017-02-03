@@ -27,7 +27,6 @@ public class GameModel {
     List<Coordinate> computerMisses;
 
     public GameModel(){
-
         aircraftCarrier = new BattleshipModel("AircraftCarrier",5,
                 new Coordinate(0,0), new Coordinate(0,0));
         battleship      = new BattleshipModel("Battleship",4,

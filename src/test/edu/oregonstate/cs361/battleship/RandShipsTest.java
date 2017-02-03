@@ -1,13 +1,17 @@
 package edu.oregonstate.cs361.battleship;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by fbolanos on 2/3/2017.
  */
 public class RandShipsTest {
-    @org.junit.Test
+    @Test
     public void print() throws Exception {
         int count=0;
+
+
         RandShips randy= new RandShips();
         RandShips randy2= new RandShips();
 
@@ -28,7 +32,6 @@ public class RandShipsTest {
         //restrained to a specific range eventually this assert will fail when
         //both generate the same random numbers.
         assertNotEquals(randy.AircraftCordsStart,randy2.AircraftCordsStart);
-
     }
 
 
