@@ -25,23 +25,13 @@ public class Main {
     }
 
     //This function should return a new model
-    private static String newModel() {
+    static String newModel() {
 
         GameModel model = new GameModel();
         Gson gson = new Gson();
 
         System.out.println(gson.toJson(model));
         return gson.toJson(model);
-    }
-
-    //This function should accept an HTTP request and deseralize it into an actual Java object.
-    private static BattleshipModel getModelFromReq(Request req){
-
-        Gson gson = new Gson();
-
-        //Populate a  BattleshipModel object using JSON data
-        return gson.fromJson(req.body(),BattleshipModel.class);
-
     }
 
     //This controller should take a json object from the front end, and place the ship as requested, and then return the object.
@@ -51,8 +41,8 @@ public class Main {
 
     //Similar to placeShip, but with firing.
     private static String fireAt(Request req) {
-        Gson gson = new Gson();
         Random rand = new Random(1);
+        Gson gson = new Gson();
         GameModel model = gson.fromJson(req.body(),GameModel.class);
         Coordinate fire = new Coordinate(Integer.parseInt(req.params(":col")), Integer.parseInt(req.params(":row")));
 
@@ -64,12 +54,14 @@ public class Main {
             }
         }
 
+
         Coordinate fireAI = new Coordinate(rand.nextInt(10) + 1, rand.nextInt(10) + 1);
         //Check for location that isn't already on board.
         while (checkRepeatFire(fireAI, model.computerHits, model.computerMisses)) {
             fireAI.Across = rand.nextInt(10) + 1;
             fireAI.Down = rand.nextInt(10) + 1;
         }
+
         //Check if AI hit the players ships
         if (checkCollision(fireAI, model.aircraftCarrier, model.battleship, model.cruiser, model.destroyer, model.submarine)) {
             model.computerHits.add(fireAI);
@@ -78,15 +70,13 @@ public class Main {
         }
 
         System.out.println(gson.toJson(model));
-
         return gson.toJson(model);
     }
 
-    private static Boolean checkCollision(Coordinate cord, BattleshipModel ac, BattleshipModel bs, BattleshipModel c, BattleshipModel d, BattleshipModel s) {
+    static boolean checkCollision(Coordinate cord, BattleshipModel ac, BattleshipModel bs, BattleshipModel c, BattleshipModel d, BattleshipModel s) {
         //Across = col, Down = row
         //Check if horizontal or vertical
-        List<BattleshipModel> shipList;
-        shipList = new ArrayList<>();
+        ArrayList<BattleshipModel> shipList = new ArrayList<BattleshipModel>();
         shipList.add(ac);
         shipList.add(bs);
         shipList.add(c);
@@ -105,7 +95,8 @@ public class Main {
         return false;
     }
 
-    private static boolean checkRepeatFire(Coordinate cord, List<Coordinate> hit, List<Coordinate> miss) {
+    static boolean checkRepeatFire(Coordinate cord, List<Coordinate> hit, List<Coordinate> miss) {
+
         for (Coordinate aHit : hit) {
             if (cord.Across == aHit.Across && cord.Down == aHit.Down)
                 return true;
