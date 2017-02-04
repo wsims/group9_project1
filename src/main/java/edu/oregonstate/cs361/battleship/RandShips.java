@@ -37,7 +37,7 @@ import java.util.Random;
             int[] StartCord=new int[2];
             int[] EndCord=new int[2];
 
-            Random rand = new Random();
+            Random rand = new Random(1);
             boolean crash = true;
             boolean sameloc = true;
 
@@ -81,7 +81,7 @@ import java.util.Random;
                     }
                 }
 
-                //horizontal left orientation chek
+                //horizontal left orientation check
                 if (orientation % 4 == 2) {
                     if ((ycord - size) >= 0) {
                         for (int i = ycord - size; i <= ycord; i++) {
@@ -175,4 +175,5 @@ import java.util.Random;
             System.out.print("\n");
         }
     }
+
 }

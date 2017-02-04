@@ -29,8 +29,35 @@ public class Main {
 
         GameModel model = new GameModel();
         Gson gson = new Gson();
-
+        RandShips computerShips = new RandShips();
+        computerShips.print();
+        //Initialize computer_aircraftCarrier random coordinates.
+        model.computer_aircraftCarrier.start.Across = computerShips.AircraftCordsStart[1] + 1;
+        model.computer_aircraftCarrier.start.Down = computerShips.AircraftCordsStart[0] + 1;
+        model.computer_aircraftCarrier.end.Across = computerShips.AircraftCordsEnd[1] + 1;
+        model.computer_aircraftCarrier.end.Down = computerShips.AircraftCordsEnd[0] + 1;
+        //Initialize computer_battleship random coordinates.
+        model.computer_battleship.start.Across = computerShips.BattleshipCordsStart[1] + 1;
+        model.computer_battleship.start.Down = computerShips.BattleshipCordsStart[0] + 1;
+        model.computer_battleship.end.Across = computerShips.BattleshipCordsEnd[1] + 1;
+        model.computer_battleship.end.Down = computerShips.BattleshipCordsEnd[0] + 1;
+        //Initialize computer_cruiser random coordinates.
+        model.computer_cruiser.start.Across = computerShips.CruiserCordsStart[1] + 1;
+        model.computer_cruiser.start.Down = computerShips.CruiserCordsStart[0] + 1;
+        model.computer_cruiser.end.Across = computerShips.CruiserCordsEnd[1] + 1;
+        model.computer_cruiser.end.Down = computerShips.CruiserCordsEnd[0] + 1;
+        //Initialize computer_destroyer random coordinates.
+        model.computer_destroyer.start.Across = computerShips.DestroyerCordsStart[1] + 1;
+        model.computer_destroyer.start.Down = computerShips.DestroyerCordsStart[0] + 1;
+        model.computer_destroyer.end.Across = computerShips.DestroyerCordsEnd[1] + 1;
+        model.computer_destroyer.end.Down = computerShips.DestroyerCordsEnd[0] + 1;
+        //Initialize computer_submarine random coordinates.
+        model.computer_submarine.start.Across = computerShips.SubmarineCordsStart[1] + 1;
+        model.computer_submarine.start.Down = computerShips.SubmarineCordsStart[0] + 1;
+        model.computer_submarine.end.Across = computerShips.SubmarineCordsEnd[1] + 1;
+        model.computer_submarine.end.Down = computerShips.SubmarineCordsEnd[0] + 1;
         System.out.println(gson.toJson(model));
+
         return gson.toJson(model);
     }
 
@@ -69,7 +96,10 @@ public class Main {
             model.computerMisses.add(fireAI);
         }
 
-        
+        if (checkWin(model.playerHits, model.computerHits)) {
+            model.ResetGame();
+        }
+
         System.out.println(gson.toJson(model));
         return gson.toJson(model);
     }
@@ -109,12 +139,6 @@ public class Main {
         return false;
     }
     
-     //resets model
-    private static void resetgame(GameModel model){
-        model.ResetGame();
-    }
-
-    
     //function that checks if won
     private static boolean checkWin(List<Coordinate> phits, List<Coordinate> chits){
         boolean playerWin=false;
@@ -129,11 +153,11 @@ public class Main {
 
         //checks if any of the two players has won and if so it resets the game
         if(playerWin || (playerWin && computerWin)) {
-            System.out.println("game won by player");
+            System.out.println("Game won by player");
             return true;
         }
         else if(computerWin && (!playerWin)){
-            System.out.println("game won by computer");
+            System.out.println("Game won by computer");
             return true;
         }
         else
