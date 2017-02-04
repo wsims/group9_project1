@@ -100,6 +100,7 @@ import java.util.Random;
                     }
                 }
 
+
                 //vertical down orientation check
                 if (orientation % 4 == 3) {
                     if ((xcord + size) <= 9) {
